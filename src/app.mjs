@@ -14,6 +14,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import envConfig from "./config/env.config.mjs";
 import { errorHandler } from "./errors/errorHandler.mjs";
+import swaggerUIExpress from "swagger-ui-express"
+import { specs } from "./config/swagger.config.mjs";
 
 // Definimos el puerto en el que se ejecutará el servidor, utilizando el puerto definido en las variables de entorno si está disponible, de lo contrario, utilizamos el puerto 8080 por defecto
 const PORT = envConfig.PORT || 8080;
@@ -68,6 +70,8 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/api-docs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
 
 // Usamos las rutas
 app.use("/api", router);
